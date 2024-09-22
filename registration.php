@@ -33,10 +33,12 @@ if(isset($_POST['submit'] ))
 	{
       echo "<script>alert('Password Must be >=6');</script>"; 
 	}
-	elseif(strlen($_POST['phone']) < 10)  
-	{
-      echo "<script>alert('Invalid phone number!');</script>"; 
-	}
+	if (!ctype_digit($_POST['phone'])) {
+      echo "<script>alert('Phone number must contain only digits!');</script>";
+  } elseif (strlen($_POST['phone']) != 10) {
+      echo "<script>alert('Phone number must be exactly 10 digits!');</script>";
+  }
+  
 
     elseif (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) 
     {
@@ -85,7 +87,7 @@ if(isset($_POST['submit'] ))
             <nav class="navbar navbar-dark">
                <div class="container">
                   <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#mainNavbarCollapse">&#9776;</button>
-                  <a class="navbar-brand" href="index.php"> <img class="img-rounded" src="images/icn.png" alt=""> </a>
+                  <a class="navbar-brand" href="index.php"> <img class="img-rounded" src="images/foodrush.png" alt="" width="50" height="50"> </a>
                   <div class="collapse navbar-toggleable-md  float-lg-right" id="mainNavbarCollapse">
                      <ul class="nav navbar-nav">
 							<li class="nav-item"> <a class="nav-link active" href="index.php">Home <span class="sr-only">(current)</span></a> </li>
@@ -192,21 +194,9 @@ if(isset($_POST['submit'] ))
                            <div class="col-xs-12 col-sm-3 payment-options color-gray">
                               <h5>Payment Options</h5>
                               <ul>
-                                 <li>
-                                    <a href="#"> <img src="images/paypal.png" alt="Paypal"> </a>
-                                 </li>
-                                 <li>
-                                    <a href="#"> <img src="images/mastercard.png" alt="Mastercard"> </a>
-                                 </li>
-                                 <li>
-                                    <a href="#"> <img src="images/maestro.png" alt="Maestro"> </a>
-                                 </li>
-                                 <li>
-                                    <a href="#"> <img src="images/stripe.png" alt="Stripe"> </a>
-                                 </li>
-                                 <li>
-                                    <a href="#"> <img src="images/bitcoin.png" alt="Bitcoin"> </a>
-                                 </li>
+                              <li>
+                                    <li><a href="#"><img src="images/esewa.jpg" alt="Esewa" width="90"></a></li>
+                                    <li><a href="#"><img src="images/cod.jpg" alt="Cash On Delivery" width="90"></a></li>
                               </ul>
                            </div>
                            <div class="col-xs-12 col-sm-4 address color-gray">

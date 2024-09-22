@@ -90,7 +90,7 @@ if(isset($_POST['submit'] ))
             <div class="navbar-header">
                     <a class="navbar-brand" href="dashboard.php">
                         
-                        <span><img src="images/icn.png" alt="homepage" class="dark-logo" /></span>
+                    <span><img src="images/Food Rush.png" alt="homepage" class="dark-logo"  height="50" width="50"/></span>
                     </a>
                 </div>
                 <div class="navbar-collapse">
