@@ -263,14 +263,14 @@ else
                         <div class="card p-30">
                             <div class="media">
                                 <div class="media-left meida media-middle"> 
-                                    <span><i class="fa fa-usd f-s-40" aria-hidden="true"></i></span>
+                                    
                                 </div>
                                 <div class="media-body media-text-right">
                                     <h2><?php 
                                         $result = mysqli_query($db, 'SELECT SUM(price) AS value_sum FROM users_orders WHERE status = "closed"'); 
                                         $row = mysqli_fetch_assoc($result); 
                                         $sum = $row['value_sum'];
-                                        echo $sum;
+                                        echo 'Rs. ' . number_format($sum, 2);
                                         ?></h2>
                                     <p class="m-b-0">Total Earnings</p>
                                 </div>
