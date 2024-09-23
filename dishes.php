@@ -69,10 +69,29 @@ include_once 'product-action.php';
                     </ul>
                 </div>
             </div>
-			<?php $ress= mysqli_query($db,"select * from restaurant where rs_id='$_GET[res_id]'");
-									     $rows=mysqli_fetch_array($ress);
-										  
-										  ?>
+			<?php
+// Add this function to your existing PHP code
+function extractLatLon($address) {
+    if (!is_string($address) || empty($address)) {
+        return false;
+    }
+    $coords = explode('zzz', $address);
+    if (count($coords) === 2) {
+        return [
+            'latitude' => trim($coords[0]),
+            'longitude' => trim($coords[1])
+        ];
+    }
+    return false;
+}
+
+// Fetch address from the database
+$ress = mysqli_query($db, "SELECT * FROM restaurant WHERE rs_id='$_GET[res_id]'");
+$rows = mysqli_fetch_array($ress);
+$address = $rows['address']; // Assuming this contains 'latitudezzzlongitude'
+$coords = extractLatLon($address);
+?>
+
             <section class="inner-page-hero bg-image" data-image-src="images/img/restrrr.png">
                 <div class="profile">
                     <div class="container">
@@ -84,11 +103,12 @@ include_once 'product-action.php';
                             </div>
 							
                             <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 profile-desc">
-                                <div class="pull-left right-text white-txt">
-                                    <h6><a href="#"><?php echo $rows['title']; ?></a></h6>
-                                    <p><?php echo $rows['address']; ?></p>   
-                                </div>
-                            </div>
+    <div class="pull-left right-text white-txt">
+        <h6><a href="#"><?php echo $rows['title']; ?></a></h6>
+        <p id="restaurant-address"><?php echo $rows['address']; ?></p> <!-- This will be updated -->
+    </div>
+</div>
+
 							
 							
                         </div>
@@ -373,7 +393,7 @@ $item_total += ($item["price"]*$item["quantity"]);
                                             <option>Size XL</option>
                                         </select>
                                     </div>
-                                    <div clasx`s="col-xs-5">
+                                    <div clasxs="col-xs-5">
                                         <input class="form-control" type="number" value="0" id="quant-input-4"> </div>
                                 </div>
                             </div>
@@ -428,6 +448,44 @@ $item_total += ($item["price"]*$item["quantity"]);
     <script src="js/jquery.isotope.min.js"></script>
     <script src="js/headroom.js"></script>
     <script src="js/foodpicky.min.js"></script>
+    <script>
+function reverseGeocode(lat, lon, callback) {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.address) {
+                const address = `${data.address.road || ''}, ${data.address.city || data.address.town || ''}, ${data.address.country || ''}`;
+                callback(address);
+            } else {
+                callback("Address not found");
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching address:', error);
+            callback("Error fetching address");
+        });
+}
+
+function updateAddress() {
+    const coords = <?php echo json_encode($coords); ?>; // PHP-generated coordinates
+
+    if (coords && coords.latitude && coords.longitude) {
+        reverseGeocode(coords.latitude, coords.longitude, function (address) {
+            document.getElementById('restaurant-address').textContent = address; // Update the address in the UI
+        });
+    } else {
+        console.error('Invalid coordinates:', coords);
+    }
+}
+
+// Call the function when the page loads
+document.addEventListener('DOMContentLoaded', function () {
+    updateAddress();
+});
+</script>
+
 </body>
 
 </html>

@@ -392,8 +392,10 @@ if(isset($_POST['submit']))
                                             <div class="col-md-12 ">
                                                 <div class="form-group">
                                                     
-                                                    <textarea name="address" type="text" style="height:100px;" class="form-control" > <?php echo $row['address']; ?> </textarea>
-                                                </div>
+                                                   <!-- <textarea name="address" type="text" style="height:100px;" class="form-control"></textarea> -->
+                                                   <input class="location-inp" type="hidden" name="address">
+                                                    <div class="nav-link active"  onclick="openLocationModal()">Enter Location <span class="sr-only"></span></div> 
+                                                </div>           
                                             </div>
                                         </div>
                                       
@@ -416,7 +418,18 @@ if(isset($_POST['submit']))
         </div>
   
     </div>
-  
+    <div id="locationModal" class="modal"> 
+    <div class="modal-content">
+        <span class="close" onclick="closeLocationModal()">&times;</span>
+        <h2>Select Your Location</h2>
+        <div id="map" style="height: 400px;"></div>
+            <button type="submit" onclick="closeLocationModal()">Confirm Location</button>
+    </div>
+</div>
+    <!-- Include Leaflet for the map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/map.js"></script>                                                
     <script src="js/lib/jquery/jquery.min.js"></script>
     <script src="js/lib/bootstrap/js/popper.min.js"></script>
     <script src="js/lib/bootstrap/js/bootstrap.min.js"></script>

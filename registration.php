@@ -160,10 +160,13 @@ if(isset($_POST['submit'] ))
                                        <label for="exampleInputPassword1">Confirm password</label>
                                        <input type="password" class="form-control" name="cpassword" id="exampleInputPassword2"> 
                                     </div>
-									 <div class="form-group col-sm-12">
-                                       <label for="exampleTextarea">Delivery Address</label>
-                                       <textarea class="form-control" id="exampleTextarea"  name="address" rows="3"></textarea>
+                                    <div class="form-group col-sm-12">
+                                       <label for="exampleTextarea">Address</label><br>
+                                       <input class="location-inp" type="hidden" name="address">
+                                       <div class="nav-link active"  onclick="openLocationModal()">Enter Location <span class="sr-only"></span></div> 
+
                                     </div>
+									 
                                    
                                  </div>
                                 
@@ -215,7 +218,18 @@ if(isset($_POST['submit'] ))
             </footer>
          
          </div>
-       
+         <div id="locationModal" class="modal"> 
+    <div class="modal-content">
+        <span class="close" onclick="closeLocationModal()">&times;</span>
+        <h2>Select Your Location</h2>
+        <div id="map" style="height: 400px;"></div>
+            <button type="submit" onclick="closeLocationModal()">Confirm Location</button>
+    </div>
+</div>
+    <!-- Include Leaflet for the map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/map.js"></script>
     <script src="js/jquery.min.js"></script>
     <script src="js/tether.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
