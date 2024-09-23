@@ -63,80 +63,12 @@ label.control-label {
   color: #777;
 }
 
-/* 
-table { 
-	width: 750px; 
-	border-collapse: collapse; 
-	margin: auto;
-	
-	}
-
-/* Zebra striping */
-/* tr:nth-of-type(odd) { 
-	background: #eee; 
-	}
-
-th { 
-	background: #404040; 
-	color: white; 
-	font-weight: bold; 
-	
-	}
-
-td, th { 
-	padding: 10px; 
-	border: 1px solid #ccc; 
-	text-align: left; 
-	font-size: 14px;
-	
-	} */ */
 
 
 @media 
 only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
 
-	/* table { 
-	  	width: 100%; 
-	}
-
-	
-	table, thead, tbody, th, td, tr { 
-		display: block; 
-	} */
-	
-	
-	/* thead tr { 
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
-	
-	tr { border: 1px solid #ccc; } */
-	
-	/* td { 
-		
-		border: none;
-		border-bottom: 1px solid #eee; 
-		position: relative;
-		padding-left: 50%; 
-	}
-
-	td:before { 
-		
-		position: absolute;
-	
-		top: 6px;
-		left: 6px;
-		width: 45%; 
-		padding-right: 10px; 
-		white-space: nowrap;
-		
-		content: attr(data-column);
-
-		color: #000;
-		font-weight: bold;
-	} */
 
 }
 
@@ -208,7 +140,7 @@ only screen and (max-width: 760px),
                     <div class="row">
                         <div class="col-xs-12">
                           </div>
-                        <div class="col-xs-12">
+                        <div class="col -xs-12">
                             <div class="bg-gray">
                                 <div class="row">
 								
@@ -222,6 +154,7 @@ only screen and (max-width: 760px),
 							   <th>Status</th>
 							     <th>Date</th>
 								   <th>Action</th>
+								   <th>Invoice</th>
 							  
 							</tr>
 						  </thead>
@@ -285,6 +218,15 @@ only screen and (max-width: 760px),
 														  <td data-column="Date"> <?php echo $row['date']; ?></td>
 														   <td data-column="Action"> <a href="delete_orders.php?order_del=<?php echo $row['o_id'];?>" onclick="return confirm('Are you sure you want to cancel your order?');" class="btn btn-danger btn-flat btn-addon btn-xs m-b-10"><i class="fa fa-trash-o" style="font-size:16px"></i></a> 
 															</td>
+															<td>
+															<form action="generate_invoice.php" method="post" target="_blank">
+    <input type="hidden" name="orderId" value="<?php echo $row['o_id']; ?>">
+    <button type="submit" class="btn btn-primary">Print Invoice</button>
+</form>
+
+															</td>
+															
+
 														 
 												</tr>
 												
@@ -334,7 +276,7 @@ only screen and (max-width: 760px),
                                     <h5>Addition informations</h5>
                                    <p>Join thousands of other restaurants who benefit from having partnered with us.</p>
                                 </div>
-                    </div>
+ </div>
                         </div>
                     </div>
            
@@ -352,6 +294,22 @@ only screen and (max-width: 760px),
     <script src="js/jquery.isotope.min.js"></script>
     <script src="js/headroom.js"></script>
     <script src="js/foodpicky.min.js"></script>
+    <script>
+        function printInvoice(orderId) {
+            // Send an AJAX request to generate the PDF invoice
+            $.ajax({
+                type: "POST",
+                url: "generate_invoice.php",
+                data: {orderId: orderId},
+                success: function(response) {
+                    // Create a new window with the PDF invoice
+                    var win = window.open();
+                    win.document.write(response);
+                    win.print();
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
