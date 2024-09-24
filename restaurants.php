@@ -75,10 +75,15 @@ session_start();
             <div class="row">
                 <!-- You can add a sidebar or other content here if needed -->
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div class="bg-gray restaurant-entry">
-                        <br>
+                <div class="clearfix">
                         <h3 style="font-weight: bold; text-decoration: underline; margin-left: 2%;">List Of Restaurants</h3>
-                        <br>
+                        <button id="nearestRestaurantBtn" class="btn btn-primary pull-right" style="margin-top: -40px;">
+                            Show Nearest Restaurant From Me
+                        </button>
+                    </div>
+                    <br>
+                    <div class="bg-gray restaurant-entry">
+                        <br>    
                         <div class="row">
                             <?php
                             function extractLatLon($address) {
@@ -248,6 +253,13 @@ session_start();
 <!-- <script src="js/script.js"></script> -->
 
 <!-- Leaflet Map Initialization Script -->
+<script>
+    // Handle button click to redirect to nearrestaurant.php
+    document.getElementById('nearestRestaurantBtn').addEventListener('click', function() {
+        window.location.href = 'nearrestaurant.php';
+    });
+</script>
+
 <script>
     let map;
 
