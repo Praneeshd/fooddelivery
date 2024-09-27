@@ -91,7 +91,7 @@ else
                             </ul>
                         </li>
 						 <li> <a href="all_orders.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span>Orders</span></a></li>
-                         
+                         <li> <a href="deliveryroutes.php"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span>Delivery</span></a></li>
                     </ul>
                 </nav>
             

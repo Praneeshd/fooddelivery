@@ -260,6 +260,9 @@ session_start();
     });
 </script>
 
+<!-- Add Leaflet Routing Machine -->
+<script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+
 <script>
     let map;
 
@@ -275,44 +278,49 @@ session_start();
 
         // Initialize the map after modal is fully shown
         $('#mapModal').on('shown.bs.modal', function () {
-            console.log("Initializing map");
-            map = L.map('map').setView([userLat, userLon], 13);
+            if (!map) {
+                console.log("Initializing map");
+                map = L.map('map').setView([userLat, userLon], 13);
 
-            // Add OpenStreetMap tiles
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
+                // Add OpenStreetMap tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
 
-            // Add user marker
-            L.marker([userLat, userLon]).addTo(map)
-                .bindPopup('Your Location')
-                .openPopup();
+                // Add user marker
+                L.marker([userLat, userLon]).addTo(map)
+                    .bindPopup('Your Location')
+                    .openPopup();
 
-            // Add restaurant marker
-            L.marker([resLat, resLon]).addTo(map)
-                .bindPopup('Restaurant Location')
-                .openPopup();
+                // Add restaurant marker
+                L.marker([resLat, resLon]).addTo(map)
+                    .bindPopup('Restaurant Location')
+                    .openPopup();
 
-            // Fit the map bounds to include both markers
-            const bounds = L.latLngBounds([[userLat, userLon], [resLat, resLon]]);
-            map.fitBounds(bounds);
+                // Add route calculation using Leaflet Routing Machine
+                L.Routing.control({
+                    waypoints: [
+                        L.latLng(userLat, userLon),
+                        L.latLng(resLat, resLon)
+                    ],
+                    routeWhileDragging: true
+                }).addTo(map);
 
-            // Ensure the map resizes correctly
-            map.invalidateSize();
+                // Ensure the map resizes correctly
+                map.invalidateSize();
+            }
         });
 
-        // Reload the page when modal is hidden to refresh the whole page
+        // Clean up when modal is hidden
         $('#mapModal').on('hidden.bs.modal', function () {
-            if (map !== undefined) {
+            if (map) {
                 map.remove();
-                map = undefined;
+                map = undefined; // Reset map to undefined when modal is closed
             }
-
-            // Reload the page
-            location.reload();
         });
     }
+
     function reverseGeocode(lat, lon, callback) {
         const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`;
 
